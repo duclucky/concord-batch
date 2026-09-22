@@ -19,6 +19,12 @@ def view(value) -> dict:
     return json.loads(value if isinstance(value, str) else str(value))
 
 
+def address_text(value) -> str:
+    if hasattr(value, "as_hex"):
+        return value.as_hex
+    return "0x" + bytes(value).hex()
+
+
 def set_time(vm, timestamp: int) -> None:
     text = datetime.fromtimestamp(timestamp, timezone.utc).isoformat().replace("+00:00", "Z")
     vm.warp(text)

@@ -48,7 +48,7 @@ def test_sponsor_may_also_be_one_of_three_distinct_participants(
 ):
     contract = direct_deploy(CONTRACT_PATH)
     create_batch(contract, direct_vm, direct_alice, direct_alice, direct_bob, direct_charlie)
-    assert view(contract.get_batch("batch-1"))["sponsor"].lower() == direct_alice.as_hex.lower()
+    assert view(contract.get_batch("batch-1"))["sponsor"].lower() == address_text(direct_alice).lower()
 
 
 def test_policy_and_intent_fields_reject_non_ascii(
