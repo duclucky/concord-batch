@@ -477,13 +477,13 @@ batches, and every credit has a pull withdrawal.
 
 ### Intelligent Contracts
 
-- [ ] Reusable primitive with three named consumers.
-- [ ] Semantic validator judgment over complete pair meaning.
-- [ ] Direct execution-right and GEN-credit/refund consequence.
-- [ ] Documented views/ticket adapter as reuse proof; no pass-through consumer.
-- [ ] Adversarial direct and validator-replay tests.
-- [ ] Real Studio Dev lifecycle with successful execution results.
-- [ ] Canonical graph/ticket/credit/accounting evidence and explorer URLs.
+- [x] Reusable primitive with three named consumers.
+- [x] Semantic validator judgment over complete pair meaning.
+- [x] Direct execution-right and GEN-credit/refund consequence.
+- [x] Documented views/ticket adapter as reuse proof; no pass-through consumer.
+- [x] Adversarial direct and validator-replay tests.
+- [x] Real Studio Dev lifecycle with successful execution results.
+- [x] Canonical graph/ticket/credit/accounting evidence and explorer URLs.
 - [ ] Contract-only public Git repository with meaningful history and CI.
 - [ ] `Project concord-batch -Category intelligent-contracts -ExplorerUrl
   <address URL>` reports `NO BLOCKER`.

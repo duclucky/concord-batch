@@ -1,9 +1,9 @@
 {
   "network": "studio-dev",
   "chainId": 61997,
-  "contractAddress": "0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
-  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
-  "batchId": "concord-demo-d5f09b3",
+  "contractAddress": "0x678607d653706E1Bd4B0812035e5b4bE661438bc",
+  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0x678607d653706E1Bd4B0812035e5b4bE661438bc",
+  "batchId": "concord-demo-479caf0",
   "roles": {
     "participantA": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
     "participantB": "0x45aD397c438397A702B53a7499a78D08961D39Db",
@@ -11,30 +11,33 @@
   },
   "sponsorRole": "participantA",
   "demoPurse": "2 GEN",
-  "phase": "RETRYABLE",
-  "selectedOrder": [],
+  "phase": "CLEARED",
+  "selectedOrder": [
+    "concord-demo-479caf0-A",
+    "concord-demo-479caf0-C"
+  ],
   "attempt": {
-    "attemptId": "concord-demo-d5f09b3-attempt-1",
-    "outcome": "RETRYABLE",
-    "meaningDigest": "2464ce9975c9ca109420679347c57407e0e2a677b273b9cfd78c5155922c2fbe"
+    "attemptId": "concord-demo-479caf0-attempt-1",
+    "outcome": "VALID",
+    "meaningDigest": "871572f6be6f1e93eb8ff78ade689262fa344da712cb8b2d79985934e302079d"
   },
   "credits": {
-    "participantA": "0 GEN",
+    "participantA": "1 GEN",
     "participantB": "0 GEN",
-    "participantC": "0 GEN"
+    "participantC": "1 GEN"
   },
   "accounting": {
     "totalReceived": "2 GEN",
-    "totalLocked": "2 GEN",
-    "totalCredits": "0 GEN",
+    "totalLocked": "0 GEN",
+    "totalCredits": "2 GEN",
     "totalWithdrawn": "0 GEN"
   },
   "transactions": {
-    "participantA_create_batch_1": "0x1b8d7a5b73b21152190db5527f92fb5ee1034f33a26c1f23756eb17bb1d7463f",
-    "participantA_submit_intent_2": "0x3a7053902edabde2f6bfca6d95a7a375819ba03d9ecc78295c6efc03e1cb2951",
-    "participantB_submit_intent_3": "0xa1485155b17df1863688100e79712ce641da4d4304eb9dbd744e43afe4b4f25a",
-    "participantC_submit_intent_4": "0x46cb64669f666a0eabb16b7d920889cda42823d1de35b21e77df56889f929763",
-    "participantA_review_batch_5": "0xaf2155e8b2b7a32290adf1d3d1dd86374b53d0ee6f2ec3b08198405e49cdcc80"
+    "participantA_create_batch_1": "0x9056213427534d408febf2af2d0f69fdd10de05dfe36bd54d9e93e86d84ff424",
+    "participantA_submit_intent_2": "0xd2bc026a3b5ecdffced1456369e1e77e34fd61344bbdcec84c5bd1331e1d431a",
+    "participantB_submit_intent_3": "0xdc72435ca61fe83ffeba3e85a5d532a11fc94ba4548814231aadca84439cb046",
+    "participantC_submit_intent_4": "0xe1191097f6db70599fff2ffbf9dbae05c9ea866c544283b2b51c1724e7ad3278",
+    "participantA_review_batch_5": "0x930e266a00617bd7d91df235b94ef84ac6c3a3de639d064950a1455dea247121"
   },
   "evidenceIsSanitized": true
 }
