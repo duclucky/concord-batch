@@ -62,7 +62,8 @@ def _digest(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
-def graph_payload(contract, batch_id="batch-1", relations=None, **overrides) -> dict:
+def graph_payload(contract, lookup_batch_id="batch-1", relations=None, **overrides) -> dict:
+    batch_id = lookup_batch_id
     batch = view(contract.get_batch(batch_id))
     if relations is None:
         relations = [

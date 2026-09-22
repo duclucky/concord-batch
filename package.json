@@ -7,7 +7,6 @@
     "lint:contracts": ".venv\\Scripts\\genvm-lint.exe check contracts/concord_batch.py",
     "test:direct": ".venv\\Scripts\\python.exe -m pytest tests/direct -q",
     "test:deployment": ".venv\\Scripts\\python.exe -m pytest tests/deployment -q",
-    "precheck": ".venv\\Scripts\\python.exe scripts/precheck.py"
+    "objective:precheck": ".venv\\Scripts\\python.exe scripts/precheck.py"
   }
 }
-

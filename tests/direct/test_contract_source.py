@@ -39,7 +39,6 @@ def test_value_entrypoint_is_payable_and_withdraw_debits_before_transfer():
         for node in ast.walk(tree)
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
     }
-    assert "@gl.public.write.payable" in methods["create_batch"]
+    assert "@gl.public.write.payable\n    def create_batch" in source
     withdraw = methods["withdraw_credit"]
     assert withdraw.find("credit.amount = bigint(0)") < withdraw.find("emit_transfer")
-
