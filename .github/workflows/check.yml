@@ -24,7 +24,7 @@ jobs:
       - name: ASCII and source metadata
         run: python -m pytest tests/direct/test_contract_source.py -q
       - name: GenVM semantic lint
-        run: genvm-lint check contracts/concord_batch.py
+        run: python scripts/genvm_lint_rc.py check contracts/concord_batch.py
       - name: Direct-mode lifecycle and safety
         run: python -m pytest tests/direct -q
       - name: Deployment receipt parsers

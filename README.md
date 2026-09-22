@@ -94,7 +94,9 @@ The gate performs ASCII/header checks, GenVM semantic lint, direct-mode
 lifecycle/safety tests, and raw/normalized deployment receipt parser tests.
 The current verified result is 26 direct tests plus 4 receipt tests, all
 passing; `genvm-lint` recognizes exactly `ConcordBatch` with 7 views and 7
-writes.
+writes. The pinned RC linter is invoked through a documented compatibility
+entrypoint that only registers the renamed sandboxed v0.3
+`run_nondet_default` call in its reachability table.
 
 ## Honest limits
 

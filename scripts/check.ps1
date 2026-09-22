@@ -8,7 +8,7 @@ Write-Output "[1/4] ASCII and coherent v0.3 header"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Output "[2/4] GenVM semantic lint"
-& "$ProjectRoot\.venv\Scripts\genvm-lint.exe" check "$ProjectRoot\contracts\concord_batch.py"
+& $Python "$ProjectRoot\scripts\genvm_lint_rc.py" check "$ProjectRoot\contracts\concord_batch.py"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Output "[3/4] Direct-mode lifecycle and safety tests"
