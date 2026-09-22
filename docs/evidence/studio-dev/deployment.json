@@ -1,0 +1,31 @@
+{
+  "network": "studio-dev",
+  "chainId": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "contract": "ConcordBatch",
+  "contractAddress": "0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
+  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
+  "status": "FINALIZED",
+  "deploy": {
+    "transactionHash": "0x86c07fc48f39432e4582943c5f732998b530250169cc7c51cfe159184efe4fc5",
+    "status": "7",
+    "executionResult": "FINISHED_WITH_RETURN"
+  },
+  "feeDepositGen": "0.100000000000010352 GEN",
+  "sourceCommit": "fcbc9e446d95c6ceb4255d1cb99b969534d32d55",
+  "sourceSha256": "aa7226557ba1d81fce01adabc638412c4550c0131d252150e7f015920a111161",
+  "sourceDirtyAtDeployment": false,
+  "depends": "py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
+  "deployedAt": "2026-09-22T00:32:34.747Z",
+  "active": true,
+  "evidenceIsSanitized": true,
+  "smoke": {
+    "method": "get_accounting",
+    "result": {
+      "total_received": "0",
+      "total_locked": "0",
+      "total_credits": "0",
+      "total_withdrawn": "0"
+    }
+  }
+}
