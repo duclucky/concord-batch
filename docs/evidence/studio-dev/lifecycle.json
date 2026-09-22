@@ -1,9 +1,9 @@
 {
   "network": "studio-dev",
   "chainId": 61997,
-  "contractAddress": "0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
-  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
-  "batchId": "concord-demo-fcbc9e4",
+  "contractAddress": "0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
+  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
+  "batchId": "concord-demo-d5f09b3",
   "roles": {
     "participantA": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
     "participantB": "0x45aD397c438397A702B53a7499a78D08961D39Db",
@@ -14,9 +14,9 @@
   "phase": "RETRYABLE",
   "selectedOrder": [],
   "attempt": {
-    "attemptId": "concord-demo-fcbc9e4-attempt-2",
+    "attemptId": "concord-demo-d5f09b3-attempt-1",
     "outcome": "RETRYABLE",
-    "meaningDigest": "c926c40a323c4317af59ae43e4bba094674542acb596a7d37f33cc4ebdb0b077"
+    "meaningDigest": "2464ce9975c9ca109420679347c57407e0e2a677b273b9cfd78c5155922c2fbe"
   },
   "credits": {
     "participantA": "0 GEN",
@@ -30,12 +30,11 @@
     "totalWithdrawn": "0 GEN"
   },
   "transactions": {
-    "participantA_create_batch_1": "0x828793d979e15b0de5e960f9a3c9cf1d1a7dd2c75fa8705590c1b30e08781113",
-    "participantA_submit_intent_2": "0x24b6202cae1dafe3f19e84c73b1cefe5da1034924a44b4cfd4a84e6b404ef6de",
-    "participantB_submit_intent_3": "0xd7028b776ddc05ead86c6538aaaf5a2be3a717460986f7422b9224fa21c7e98e",
-    "participantC_submit_intent_4": "0xc44b2a5b85ded872b59ca155c51258459a494a75f034898c15bf5a1a488127d7",
-    "participantA_review_batch_5": "0x8def6f3ea911555caf83108674b1e4cfc83727b90a6b3b027210a8b7eabee4a8",
-    "participantA_review_batch_6": "0x692144186357bc8e8ab84019d08c587a4634d9c75f8bfa4db5d8bdc6de400a68"
+    "participantA_create_batch_1": "0x1b8d7a5b73b21152190db5527f92fb5ee1034f33a26c1f23756eb17bb1d7463f",
+    "participantA_submit_intent_2": "0x3a7053902edabde2f6bfca6d95a7a375819ba03d9ecc78295c6efc03e1cb2951",
+    "participantB_submit_intent_3": "0xa1485155b17df1863688100e79712ce641da4d4304eb9dbd744e43afe4b4f25a",
+    "participantC_submit_intent_4": "0x46cb64669f666a0eabb16b7d920889cda42823d1de35b21e77df56889f929763",
+    "participantA_review_batch_5": "0xaf2155e8b2b7a32290adf1d3d1dd86374b53d0ee6f2ec3b08198405e49cdcc80"
   },
   "evidenceIsSanitized": true
 }

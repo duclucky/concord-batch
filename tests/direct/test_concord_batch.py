@@ -158,6 +158,22 @@ def test_invalid_or_cross_batch_graph_is_retryable_without_consequence(
     assert accounting_ok(accounting)
 
 
+def test_model_cannot_supply_an_extra_basis_or_settlement_field(
+    direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
+):
+    contract = direct_deploy(CONTRACT_PATH)
+    create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
+    submit_three(contract, direct_vm, direct_alice, direct_bob, direct_charlie)
+    payload = graph_payload(contract)
+    payload["pairs"][0]["basis"] = "MODEL_CHOSEN"
+    direct_vm.mock_llm(LLM_PATTERN, json.dumps(json.dumps(payload)))
+    set_time(direct_vm, BASE_TIME + 120)
+    direct_vm.sender = direct_owner
+    contract.review_batch("batch-1")
+    assert view(contract.get_batch("batch-1"))["phase"] == "RETRYABLE"
+    assert view(contract.get_accounting())["total_locked"] == str(BUDGET)
+
+
 def test_cycle_is_retryable_and_does_not_move_value(
     direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
 ):

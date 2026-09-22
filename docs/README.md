@@ -496,8 +496,16 @@ batches, and every credit has a pull withdrawal.
   pair IDs, two live reviews safely resolved to RETRYABLE, and its 2 GEN purse
   remains locked. No further value will be sent to that revision. The active
   replacement must prove a terminal lifecycle independently.
+- Studio Dev revision `0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB`
+  is also superseded and abandoned after one safe RETRYABLE result exposed a
+  second normalization bug: contract-derived `basis` was incorrectly fed back
+  through the strict model-output normalizer. Its 2 GEN purse remains locked;
+  it receives no further value.
 - It judges declared intent meaning, not actual external side effects or
   execution completion.
+- Validators decide only the four-class pair relation. Contract code derives
+  the stored basis enum from that relation; model prose cannot select or add a
+  settlement field.
 - Priority is sponsor-locked and transparent, not socially neutral or globally
   optimal; participants accept it by submitting.
 - No callback, frontend, Vercel, external adopter, legal guarantee, Portal

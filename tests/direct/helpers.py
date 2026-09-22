@@ -72,7 +72,7 @@ def graph_payload(contract, lookup_batch_id="batch-1", relations=None, **overrid
             ("B", "C", "INDEPENDENT", "NO_RESOURCE_OVERLAP"),
         ]
     pairs = []
-    for left, right, relation, basis in relations:
+    for left, right, relation, _basis in relations:
         left_id = batch_id + "-" + left
         right_id = batch_id + "-" + right
         pairs.append({
@@ -80,7 +80,6 @@ def graph_payload(contract, lookup_batch_id="batch-1", relations=None, **overrid
             "left_id": left_id,
             "right_id": right_id,
             "relation": relation,
-            "basis": basis,
             "rationale": "bounded test rationale",
         })
     payload = {
