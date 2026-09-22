@@ -484,9 +484,10 @@ batches, and every credit has a pull withdrawal.
 - [x] Adversarial direct and validator-replay tests.
 - [x] Real Studio Dev lifecycle with successful execution results.
 - [x] Canonical graph/ticket/credit/accounting evidence and explorer URLs.
-- [ ] Contract-only public Git repository with meaningful history and CI.
-- [ ] `Project concord-batch -Category intelligent-contracts -ExplorerUrl
-  <address URL>` reports `NO BLOCKER`.
+- [x] Contract-only public Git repository with meaningful history and passing CI.
+- [x] `Project concord-batch -Category intelligent-contracts -ExplorerUrl
+  https://explorer-studio-dev.genlayer.com/address/0x678607d653706E1Bd4B0812035e5b4bE661438bc`
+  reports `NO BLOCKER`.
 
 ## Honest limitations
 
