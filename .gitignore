@@ -1,6 +1,7 @@
 .env
 .venv/
 node_modules/
+.genvm-direct-cache/
 __pycache__/
 .pytest_cache/
 .gltest_cache/
@@ -8,4 +9,3 @@ __pycache__/
 artifacts/
 coverage/
 dist/
-

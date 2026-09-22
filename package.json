@@ -8,5 +8,8 @@
     "test:direct": ".venv\\Scripts\\python.exe -m pytest tests/direct -q",
     "test:deployment": ".venv\\Scripts\\python.exe -m pytest tests/deployment -q",
     "objective:precheck": ".venv\\Scripts\\python.exe scripts/precheck.py"
+  },
+  "devDependencies": {
+    "genlayer-js": "2.0.0-rc.1"
   }
 }

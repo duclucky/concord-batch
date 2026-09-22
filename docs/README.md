@@ -94,6 +94,8 @@ may compensate for a failure.
 ### In scope
 
 - Exactly three named participants and exactly two execution slots per batch.
+- The three participant addresses must be distinct; the sponsor may also occupy
+  one participant role, which keeps the primitive usable with three EOAs.
 - One bounded policy and one bounded intent per participant.
 - Complete classification of the three unordered pairs.
 - Deterministic pair selection, canonical order, two tickets, two 1 GEN
@@ -507,4 +509,3 @@ batches, and every credit has a pull withdrawal.
 - Any terminal/recovery branch can orphan the 2 GEN purse or duplicate credit.
 - Collision review finds an existing complete semantic conflict-graph clearing
   primitive matching four or more fingerprint dimensions.
-

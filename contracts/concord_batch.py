@@ -144,6 +144,8 @@ def _bounded(value: str, label: str, maximum: int) -> str:
         raise gl.vm.UserError(label + " is required")
     if len(value) > maximum:
         raise gl.vm.UserError(label + " exceeds maximum length")
+    if any(ord(char) > 127 for char in value):
+        raise gl.vm.UserError(label + " must be ASCII")
     return value.strip()
 
 def _digest(value: str) -> str:
@@ -309,15 +311,6 @@ class ConcordBatch(gl.contract.Contract):
                 return slot
         raise gl.vm.UserError("caller is not a registered participant")
 
-    def _require_actor(self, batch: BatchRecord) -> None:
-        caller = _sender()
-        if _same(caller, batch.sponsor):
-            return
-        for slot in SLOTS:
-            if _same(caller, self._participant(batch, slot)):
-                return
-        raise gl.vm.UserError("caller is not a batch actor")
-
     def _credit(self, owner: Address, amount: bigint) -> None:
         if amount <= bigint(0) or self.total_locked < amount:
             raise gl.vm.UserError("invalid credit amount")
@@ -362,7 +355,7 @@ class ConcordBatch(gl.contract.Contract):
         self._credit(second_owner, GEN)
         batch.locked = bigint(0)
         batch.settled = True
-        batch.phase = "SETTLED"
+        batch.phase = "CLEARED"
         batch.selected_first = first_id
         batch.selected_second = second_id
         self.batches[batch.batch_id] = batch
@@ -441,7 +434,7 @@ class ConcordBatch(gl.contract.Contract):
                 pair["left_id"], pair["right_id"], pair["relation"], pair["basis"], pair["rationale"])
         first_id, second_id = self._select_pair(batch, normalized["pairs"])
         if not first_id:
-            self._refund(batch, "NO_COMPATIBLE_PAIR")
+            self._refund(batch, "NO_PAIR_REFUNDED")
         else:
             self._settle_pair(batch, first_id, second_id)
 
@@ -458,14 +451,14 @@ class ConcordBatch(gl.contract.Contract):
             raise gl.vm.UserError("batch ID already exists")
         sponsor = _sender()
         participant_a, participant_b, participant_c = _as_address(participant_a), _as_address(participant_b), _as_address(participant_c)
-        addresses = [sponsor, participant_a, participant_b, participant_c]
-        if any(_same(address, ZERO_ADDRESS) for address in addresses):
+        participants = [participant_a, participant_b, participant_c]
+        if any(_same(address, ZERO_ADDRESS) for address in participants):
             raise gl.vm.UserError("role addresses are required")
-        if len({_addr(address).lower() for address in addresses}) != 4:
-            raise gl.vm.UserError("sponsor and participants must be distinct")
+        if len({_addr(address).lower() for address in participants}) != 3:
+            raise gl.vm.UserError("participants must be distinct")
         if sorted(priority_csv.split(",")) != ["A", "B", "C"]:
             raise gl.vm.UserError("priority_csv must contain A,B,C exactly once")
-        policy = _bounded(policy, "policy", 2000)
+        policy = _bounded(policy, "policy", 4000)
         now, submit, review = _now(), bigint(submit_deadline), bigint(review_deadline)
         if not now < submit:
             raise gl.vm.UserError("submit deadline must be in the future")
@@ -493,8 +486,8 @@ class ConcordBatch(gl.contract.Contract):
         intent_id = batch_id + "-" + slot
         if intent_id in self.intents:
             raise gl.vm.UserError("intent was already submitted")
-        action, preconditions, side_effects = (_bounded(action, "action", 1200),
-            _bounded(preconditions, "preconditions", 1200), _bounded(side_effects, "side_effects", 1200))
+        action, preconditions, side_effects = (_bounded(action, "action", 2000),
+            _bounded(preconditions, "preconditions", 2000), _bounded(side_effects, "side_effects", 2000))
         digest = _digest(action + "\n" + preconditions + "\n" + side_effects)
         self.intents[intent_id] = IntentRecord(intent_id, batch_id, slot, caller, action,
             preconditions, side_effects, now, digest)
@@ -515,7 +508,6 @@ class ConcordBatch(gl.contract.Contract):
             raise gl.vm.UserError("review deadline has passed")
         if batch.phase not in ("READY", "RETRYABLE"):
             raise gl.vm.UserError("batch is not ready or retryable")
-        self._require_actor(batch)
         self._review(batch, _sender(), now)
 
     @gl.public.write
@@ -523,33 +515,37 @@ class ConcordBatch(gl.contract.Contract):
         if batch_id not in self.batches:
             raise gl.vm.UserError("batch not found")
         batch = self.batches[batch_id]
-        self._require_actor(batch)
+        if not _same(_sender(), batch.sponsor):
+            raise gl.vm.UserError("caller is not the batch sponsor")
         if batch.settled:
             raise gl.vm.UserError("batch is already settled")
         if int(batch.submitted_count) == 3 or batch.phase != "OPEN":
             raise gl.vm.UserError("batch is not incomplete")
         if not _now() >= batch.submit_deadline:
             raise gl.vm.UserError("submission window is still open")
-        self._refund(batch, "REFUNDED_INCOMPLETE")
+        self._refund(batch, "INCOMPLETE_REFUNDED")
 
     @gl.public.write
     def recover_unresolved(self, batch_id: str) -> None:
         if batch_id not in self.batches:
             raise gl.vm.UserError("batch not found")
         batch = self.batches[batch_id]
-        self._require_actor(batch)
+        if not _same(_sender(), batch.sponsor):
+            raise gl.vm.UserError("caller is not the batch sponsor")
         if batch.settled:
             raise gl.vm.UserError("batch is already settled")
         if batch.phase not in ("READY", "RETRYABLE"):
             raise gl.vm.UserError("batch has no unresolved review")
         if not _now() >= batch.review_deadline:
             raise gl.vm.UserError("review window is still open")
-        self._refund(batch, "REFUNDED_UNRESOLVED")
+        self._refund(batch, "UNRESOLVED_REFUNDED")
 
     @gl.public.write
     def consume_ticket(self, batch_id: str) -> None:
         if batch_id not in self.batches:
             raise gl.vm.UserError("batch not found")
+        if self.batches[batch_id].phase != "CLEARED":
+            raise gl.vm.UserError("batch is not cleared")
         caller = _sender()
         key = batch_id + "|" + _addr(caller).lower()
         if key not in self.tickets:

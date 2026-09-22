@@ -17,7 +17,7 @@ def test_initial_accounting(direct_deploy):
     assert accounting_ok(data)
 
 
-def test_create_requires_exact_two_gen_and_distinct_roles(
+def test_create_requires_exact_two_gen_and_distinct_participants(
     direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
 ):
     contract = direct_deploy(CONTRACT_PATH)
@@ -41,6 +41,30 @@ def test_create_requires_exact_two_gen_and_distinct_roles(
     create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
     assert view(contract.get_batch("batch-1"))["phase"] == "OPEN"
     assert accounting_ok(view(contract.get_accounting()))
+
+
+def test_sponsor_may_also_be_one_of_three_distinct_participants(
+    direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie
+):
+    contract = direct_deploy(CONTRACT_PATH)
+    create_batch(contract, direct_vm, direct_alice, direct_alice, direct_bob, direct_charlie)
+    assert view(contract.get_batch("batch-1"))["sponsor"].lower() == direct_alice.as_hex.lower()
+
+
+def test_policy_and_intent_fields_reject_non_ascii(
+    direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
+):
+    contract = direct_deploy(CONTRACT_PATH)
+    set_time(direct_vm, BASE_TIME)
+    direct_vm.sender = direct_owner
+    direct_vm.value = BUDGET
+    with pytest.raises(Exception, match="must be ASCII"):
+        contract.create_batch("batch-1", direct_alice, direct_bob, direct_charlie, "A,B,C", "policy cafe\u0301", SUBMIT_DEADLINE, REVIEW_DEADLINE)
+    create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
+    set_time(direct_vm, BASE_TIME + 1)
+    direct_vm.sender = direct_alice
+    with pytest.raises(Exception, match="must be ASCII"):
+        contract.submit_intent("batch-1", "rotate key \u00e9", "window", "revoke")
 
 
 def test_submit_auth_duplicate_and_deadline_boundaries(
@@ -77,7 +101,7 @@ def test_meaning_graph_selects_highest_priority_compatible_pair(
     direct_vm.sender = direct_owner
     contract.review_batch("batch-1")
     batch = view(contract.get_batch("batch-1"))
-    assert batch["phase"] == "SETTLED"
+    assert batch["phase"] == "CLEARED"
     assert batch["selected_first"] == "batch-1-A"
     assert batch["selected_second"] == "batch-1-C"
     assert view(contract.get_credit(direct_alice))["amount"] == str(GEN)
@@ -168,7 +192,7 @@ def test_all_incompatible_refunds_sponsor_only(
     set_time(direct_vm, BASE_TIME + 120)
     direct_vm.sender = direct_charlie
     contract.review_batch("batch-1")
-    assert view(contract.get_batch("batch-1"))["phase"] == "NO_COMPATIBLE_PAIR"
+    assert view(contract.get_batch("batch-1"))["phase"] == "NO_PAIR_REFUNDED"
     assert view(contract.get_credit(direct_owner))["amount"] == str(BUDGET)
 
 
@@ -193,17 +217,13 @@ def test_prompt_injection_cannot_redirect_credit_or_change_priority(
     assert view(contract.get_credit(direct_owner))["amount"] == "0"
 
 
-def test_review_authorization_and_deadline_stale_phase(
+def test_review_is_permissionless_but_deadline_still_blocks_stale_phase(
     direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
 ):
     contract = direct_deploy(CONTRACT_PATH)
     create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
     submit_three(contract, direct_vm, direct_alice, direct_bob, direct_charlie)
     mock_graph(direct_vm, contract)
-    direct_vm.sender = "0x9999999999999999999999999999999999999999"
-    set_time(direct_vm, REVIEW_DEADLINE - 1)
-    with pytest.raises(Exception, match="not a batch actor"):
-        contract.review_batch("batch-1")
     direct_vm.sender = direct_owner
     for instant in (REVIEW_DEADLINE, REVIEW_DEADLINE + 1):
         set_time(direct_vm, instant)
@@ -213,12 +233,29 @@ def test_review_authorization_and_deadline_stale_phase(
     assert view(contract.get_accounting())["total_credits"] == "0"
 
 
+def test_nonparticipant_can_trigger_ready_review(
+    direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
+):
+    contract = direct_deploy(CONTRACT_PATH)
+    create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
+    submit_three(contract, direct_vm, direct_alice, direct_bob, direct_charlie)
+    mock_graph(direct_vm, contract)
+    direct_vm.sender = bytes.fromhex("99" * 20)
+    set_time(direct_vm, BASE_TIME + 120)
+    contract.review_batch("batch-1")
+    assert view(contract.get_batch("batch-1"))["phase"] == "CLEARED"
+
+
 def test_missing_submission_recovery_boundary_and_duplicate(
     direct_deploy, direct_vm, direct_alice, direct_bob, direct_charlie, direct_owner
 ):
     contract = direct_deploy(CONTRACT_PATH)
     create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
     direct_vm.sender = direct_alice
+    set_time(direct_vm, SUBMIT_DEADLINE)
+    with pytest.raises(Exception, match="batch sponsor"):
+        contract.recover_incomplete("batch-1")
+    direct_vm.sender = direct_owner
     set_time(direct_vm, SUBMIT_DEADLINE - 1)
     with pytest.raises(Exception, match="still open"):
         contract.recover_incomplete("batch-1")
@@ -236,6 +273,10 @@ def test_unresolved_recovery_boundary_and_duplicate(
     create_batch(contract, direct_vm, direct_owner, direct_alice, direct_bob, direct_charlie)
     submit_three(contract, direct_vm, direct_alice, direct_bob, direct_charlie)
     direct_vm.sender = direct_bob
+    set_time(direct_vm, REVIEW_DEADLINE)
+    with pytest.raises(Exception, match="batch sponsor"):
+        contract.recover_unresolved("batch-1")
+    direct_vm.sender = direct_owner
     set_time(direct_vm, REVIEW_DEADLINE - 1)
     with pytest.raises(Exception, match="still open"):
         contract.recover_unresolved("batch-1")
@@ -291,4 +332,3 @@ def test_withdraw_debits_before_transfer_and_prevents_duplicate(
     with pytest.raises(Exception, match="already withdrawn|no credit"):
         contract.withdraw_credit()
     assert accounting_ok(view(contract.get_accounting()))
-
