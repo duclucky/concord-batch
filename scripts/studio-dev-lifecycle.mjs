@@ -70,7 +70,11 @@ async function main() {
     name, createClient({ chain: studioDevnet, endpoint, account }),
   ]));
   const address = deployment.contractAddress;
-  const state = readJson(STATE);
+  let state = readJson(STATE);
+  if (state.contractAddress?.toLowerCase() !== address.toLowerCase()) {
+    state = { contractAddress: address, batchId: `concord-demo-${deployment.sourceCommit.slice(0, 7)}`, hashes: {} };
+  }
+  state.contractAddress = address;
   state.batchId ??= `concord-demo-${deployment.sourceCommit.slice(0, 7)}`;
   state.hashes ??= {};
   writeJson(STATE, state, 0o600);
