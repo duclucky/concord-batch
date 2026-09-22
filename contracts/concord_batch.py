@@ -391,8 +391,12 @@ class ConcordBatch(gl.contract.Contract):
                 "Classify all three pairs by operational meaning including preconditions and side effects. "
                 "Use INDEPENDENT/NO_RESOURCE_OVERLAP, directional relation/ORDER_DEPENDENCY, or INCOMPATIBLE with RESOURCE_CONFLICT or POLICY_CONTRADICTION. "
                 "Compare consequences, not wording. Return ONLY minified JSON with exact keys batch_id,attempt_id,policy_digest,intent_set_digest,coverage,pairs. "
-                "coverage is COMPLETE; pairs are exactly A|B,A|C,B|C with pair_id,left_id,right_id,relation,basis,rationale. Never choose value or state.\n" +
-                "batch_id=" + batch_id + "\nattempt_id=" + attempt_id + "\npolicy_digest=" + policy_digest + "\nintent_set_digest=" + intent_digest +
+                "coverage is COMPLETE; pairs use the exact canonical IDs below with keys pair_id,left_id,right_id,relation,basis,rationale. Never choose value or state.\n" +
+                "batch_id=" + batch_id + "\nattempt_id=" + attempt_id + "\npolicy_digest=" + policy_digest + "\nintent_set_digest=" + intent_digest + "\n" +
+                "intent_a_id=" + batch_id + "-A" + "\nintent_b_id=" + batch_id + "-B" + "\nintent_c_id=" + batch_id + "-C" + "\n" +
+                "required_pair_1=" + batch_id + "-A|" + batch_id + "-B" + " left_id=" + batch_id + "-A right_id=" + batch_id + "-B\n" +
+                "required_pair_2=" + batch_id + "-A|" + batch_id + "-C" + " left_id=" + batch_id + "-A right_id=" + batch_id + "-C\n" +
+                "required_pair_3=" + batch_id + "-B|" + batch_id + "-C" + " left_id=" + batch_id + "-B right_id=" + batch_id + "-C" +
                 "\nBEGIN UNTRUSTED POLICY\n" + policy + "\nEND UNTRUSTED POLICY\n" +
                 "BEGIN UNTRUSTED INTENT A\n" + intent_a.action + "\n" + intent_a.preconditions + "\n" + intent_a.side_effects + "\nEND UNTRUSTED INTENT A\n" +
                 "BEGIN UNTRUSTED INTENT B\n" + intent_b.action + "\n" + intent_b.preconditions + "\n" + intent_b.side_effects + "\nEND UNTRUSTED INTENT B\n" +

@@ -42,3 +42,11 @@ def test_value_entrypoint_is_payable_and_withdraw_debits_before_transfer():
     assert "@gl.public.write.payable\n    def create_batch" in source
     withdraw = methods["withdraw_credit"]
     assert withdraw.find("credit.amount = bigint(0)") < withdraw.find("emit_transfer")
+
+
+def test_prompt_binds_exact_canonical_intent_and_pair_ids():
+    source = CONTRACT.read_text(encoding="ascii")
+    assert '"intent_a_id=" + batch_id + "-A"' in source
+    assert '"required_pair_1=" + batch_id + "-A|" + batch_id + "-B"' in source
+    assert '"required_pair_2=" + batch_id + "-A|" + batch_id + "-C"' in source
+    assert '"required_pair_3=" + batch_id + "-B|" + batch_id + "-C"' in source

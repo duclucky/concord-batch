@@ -2,6 +2,7 @@
 .venv/
 node_modules/
 .genvm-direct-cache/
+.local/
 __pycache__/
 .pytest_cache/
 .gltest_cache/

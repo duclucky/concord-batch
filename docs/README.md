@@ -491,6 +491,11 @@ batches, and every credit has a pull withdrawal.
 ## Honest limitations
 
 - V1 is exactly three participants and two execution slots.
+- Studio Dev revision `0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029`
+  is superseded and abandoned: its prompt omitted exact canonical intent and
+  pair IDs, two live reviews safely resolved to RETRYABLE, and its 2 GEN purse
+  remains locked. No further value will be sent to that revision. The active
+  replacement must prove a terminal lifecycle independently.
 - It judges declared intent meaning, not actual external side effects or
   execution completion.
 - Priority is sponsor-locked and transparent, not socially neutral or globally

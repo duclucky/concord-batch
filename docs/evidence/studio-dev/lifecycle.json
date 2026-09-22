@@ -1,0 +1,41 @@
+{
+  "network": "studio-dev",
+  "chainId": 61997,
+  "contractAddress": "0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
+  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xcDe034a36873C39eCf4e268f256Bf2f46A2fe029",
+  "batchId": "concord-demo-fcbc9e4",
+  "roles": {
+    "participantA": "0xC495ef51618D03267A1f227aFe5b27B38c748272",
+    "participantB": "0x45aD397c438397A702B53a7499a78D08961D39Db",
+    "participantC": "0x45248be151F7f7e230150db23774733Cd966Eb45"
+  },
+  "sponsorRole": "participantA",
+  "demoPurse": "2 GEN",
+  "phase": "RETRYABLE",
+  "selectedOrder": [],
+  "attempt": {
+    "attemptId": "concord-demo-fcbc9e4-attempt-2",
+    "outcome": "RETRYABLE",
+    "meaningDigest": "c926c40a323c4317af59ae43e4bba094674542acb596a7d37f33cc4ebdb0b077"
+  },
+  "credits": {
+    "participantA": "0 GEN",
+    "participantB": "0 GEN",
+    "participantC": "0 GEN"
+  },
+  "accounting": {
+    "totalReceived": "2 GEN",
+    "totalLocked": "2 GEN",
+    "totalCredits": "0 GEN",
+    "totalWithdrawn": "0 GEN"
+  },
+  "transactions": {
+    "participantA_create_batch_1": "0x828793d979e15b0de5e960f9a3c9cf1d1a7dd2c75fa8705590c1b30e08781113",
+    "participantA_submit_intent_2": "0x24b6202cae1dafe3f19e84c73b1cefe5da1034924a44b4cfd4a84e6b404ef6de",
+    "participantB_submit_intent_3": "0xd7028b776ddc05ead86c6538aaaf5a2be3a717460986f7422b9224fa21c7e98e",
+    "participantC_submit_intent_4": "0xc44b2a5b85ded872b59ca155c51258459a494a75f034898c15bf5a1a488127d7",
+    "participantA_review_batch_5": "0x8def6f3ea911555caf83108674b1e4cfc83727b90a6b3b027210a8b7eabee4a8",
+    "participantA_review_batch_6": "0x692144186357bc8e8ab84019d08c587a4634d9c75f8bfa4db5d8bdc6de400a68"
+  },
+  "evidenceIsSanitized": true
+}

@@ -62,6 +62,14 @@ function writeEvidence(value) {
   fs.writeFileSync(EVIDENCE, `${JSON.stringify(value, null, 2)}\n`, "utf8");
 }
 
+function archivePrior(prior, reason) {
+  if (!prior?.contractAddress) return;
+  const archiveDir = path.join(path.dirname(EVIDENCE), "archive");
+  fs.mkdirSync(archiveDir, { recursive: true });
+  const archived = { ...prior, active: false, supersededReason: reason, supersededAt: new Date().toISOString() };
+  fs.writeFileSync(path.join(archiveDir, `${prior.contractAddress.toLowerCase()}.json`), `${JSON.stringify(archived, null, 2)}\n`, "utf8");
+}
+
 function formatGen(value) {
   const amount = BigInt(value);
   const whole = amount / GEN;
@@ -147,6 +155,9 @@ async function main() {
     evidenceIsSanitized: true,
     smoke: { method: "get_accounting", result: accounting },
   };
+  if (prior?.contractAddress && prior.contractAddress.toLowerCase() !== address.toLowerCase()) {
+    archivePrior(prior, "Prompt omitted exact canonical intent and pair IDs; live reviews normalized to RETRYABLE. Revision abandoned with 2 GEN locked and receives no further value.");
+  }
   writeEvidence(evidence);
   console.log(`STUDIO_DEV_DEPLOYED contract=${address}`);
   console.log("STUDIO_DEV_SMOKE get_accounting=zeroed");
