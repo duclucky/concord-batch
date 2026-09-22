@@ -1,0 +1,33 @@
+{
+  "network": "studio-dev",
+  "chainId": 61997,
+  "rpc": "https://studio-dev.genlayer.com/api",
+  "contract": "ConcordBatch",
+  "contractAddress": "0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
+  "explorerUrl": "https://explorer-studio-dev.genlayer.com/address/0xAccF5A83F41ea684b563B6D569cc331E56fDa0dB",
+  "status": "FINALIZED",
+  "deploy": {
+    "transactionHash": "0x2de3299d635831263839de833098541cadd9fcdffada5a6ff2beb67cfad3d01f",
+    "status": "7",
+    "executionResult": "FINISHED_WITH_RETURN"
+  },
+  "feeDepositGen": "0.100000000000010352 GEN",
+  "sourceCommit": "d5f09b3562f37a9eb7a9acedb1a102cea4e0dc26",
+  "sourceSha256": "31614a8cd9484647c083f9f36644db46e1e93b3ccf815297f5facfcf232400ca",
+  "sourceDirtyAtDeployment": false,
+  "depends": "py-genlayer:5jycge4q8k23462jtb0b9fyey1s9qz928sz2nbrd9mg4sxqg2qng",
+  "deployedAt": "2026-09-22T00:45:54.302Z",
+  "active": false,
+  "evidenceIsSanitized": true,
+  "smoke": {
+    "method": "get_accounting",
+    "result": {
+      "total_received": "0",
+      "total_locked": "0",
+      "total_credits": "0",
+      "total_withdrawn": "0"
+    }
+  },
+  "supersededReason": "Prompt omitted exact canonical intent and pair IDs; live reviews normalized to RETRYABLE. Revision abandoned with 2 GEN locked and receives no further value.",
+  "supersededAt": "2026-09-22T00:57:41.881Z"
+}
